@@ -1,10 +1,10 @@
 package com.java;
 
-import com.java.services.UtilService;
+import com.java.services.MenuService;
 
 public class Main {
 
     public static void main(String[] args) {
-        UtilService.mainMenuSelection();
+        MenuService.mainMenu();
     }
 }
