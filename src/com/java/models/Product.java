@@ -1,11 +1,38 @@
 package com.java.models;
 
-public class Product {
+import java.io.Serializable;
+
+public class Product implements Serializable,Comparable<Product> {
 
     private int id;
     private String name;
     private String description;
     private float price;
+
+    public Product(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public Product() {
+    }
+
+    public Product(int id, String name, String description, float price) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                '}';
+    }
 
     public int getId() {
         return id;
@@ -37,5 +64,10 @@ public class Product {
 
     public void setPrice(float price) {
         this.price = price;
+    }
+
+    @Override
+    public int compareTo(Product o) {
+        return this.id - o.id;
     }
 }
