@@ -1,5 +1,6 @@
 package com.java.services;
 
+import com.java.Main;
 import com.java.models.Store;
 
 import java.util.ArrayList;
@@ -18,8 +19,8 @@ public class StoreService {
         UtilService.writeInXML(FILE_NAME, storeList);
     }
 
-    public static void update(final String FILE_NAME, Store store, List<Store> storeList){
-        Store searchedStore = searchStore(store.getName(),storeList);
+    public static void update(final String FILE_NAME,String storeName, Store store, List<Store> storeList){
+        Store searchedStore = searchStore(storeName,storeList);
         if(searchedStore == null) return;
 
         searchedStore.setId(store.getId());
@@ -37,14 +38,45 @@ public class StoreService {
         UtilService.writeInXML(FILE_NAME,storeList);
     }
 
-    public static Store searchStore(String name,List<Store> storeList){
+    public static Store searchStore(String name,List<Store> storeList) {
         try {
             return storeList.stream().filter(item -> item.getName().compareTo(name) == 0).findFirst().get();
-        }catch(NoSuchElementException exception){
+        } catch (NoSuchElementException exception) {
             System.out.println("Could not find the store with the specified name;");
             exception.printStackTrace();
         }
         return null;
     }
 
+    public static void createStore(){
+        System.out.println("Alege un nume unic pentru depozit");
+        String storeName = UtilService.getScanner().next();
+        add(Main.getFileName(),new Store(0,storeName),Main.getStores());
+    }
+
+    public static String readStore(){
+        String chosenStore = "";
+        System.out.println("Tasteaza depozitul dorit:");
+        for(Store store: Main.getStores()){
+            System.out.print(store.getName()+"\t");
+        }
+
+        chosenStore = UtilService.getScanner().next();
+        return chosenStore;
+    }
+
+    public static void editStore(){
+        String newData = "";
+        String chosenStore = readStore();
+
+        System.out.println("Alege un nume nou:");
+        newData = UtilService.getScanner().next();
+
+        update(Main.getFileName(),chosenStore,new Store(0,newData),Main.getStores());
+    }
+
+    public static void deleteStore(){
+        String chosenStore = readStore();
+        delete(Main.getFileName(),chosenStore,Main.getStores());
+    }
 }

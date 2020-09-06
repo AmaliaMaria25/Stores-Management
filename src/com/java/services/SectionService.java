@@ -1,8 +1,10 @@
 package com.java.services;
 
+import com.java.Main;
 import com.java.models.Section;
 import com.java.models.Store;
 
+import javax.rmi.CORBA.Util;
 import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -23,11 +25,11 @@ public class SectionService {
         UtilService.writeInXML(FILE_NAME,storeList);
     }
 
-    public static void update(final String FILE_NAME, Section section, String storeName, List<Store> storeList){
+    public static void update(final String FILE_NAME, Section section, String storeName, String sectionName, List<Store> storeList){
         Store store = StoreService.searchStore(storeName,storeList);
         if(store == null) return;
 
-        Section searchedSection = searchSection(section.getName(),store.getSections());
+        Section searchedSection = searchSection(sectionName,store.getSections());
         if(searchedSection == null) return;
 
         searchedSection.setId(section.getId());
@@ -48,13 +50,60 @@ public class SectionService {
         UtilService.writeInXML(FILE_NAME,storeList);
     }
 
-    public static Section searchSection(String sectionName, Set<Section> sectionList){
-        try{
+
+    public static Section searchSection(String sectionName, Set<Section> sectionList) {
+        try {
             return sectionList.stream().filter(section -> section.getName().compareTo(sectionName) == 0).findFirst().get();
-        }catch(NoSuchElementException exception){
+        } catch (NoSuchElementException exception) {
             System.out.println("Could not find the store with the specified name;");
             exception.printStackTrace();
         }
         return null;
+    }
+
+    public static void createSection(){
+        String chosenStore = "";
+        String sectionName="";
+
+        StoreService.readStore();
+        if(StoreService.searchStore(chosenStore,Main.getStores()) == null) return;
+
+        System.out.println("Alege un nume unic de sectiune din depozitul ales");
+        sectionName = UtilService.getScanner().next();
+        add(Main.getFileName(),new Section(0,sectionName),chosenStore,Main.getStores() );
+    }
+
+    public static String readSection(Store store){
+        String chosenSection = "";
+        System.out.println("Tasteaza sectiunea dorita: ");
+        for(Section loopSection:store.getSections()){
+            System.out.println(loopSection.getName()+"\t");
+        }
+        chosenSection = UtilService.getScanner().next();
+        return chosenSection;
+    }
+
+    public static void editSection(){
+        String newData = "";
+        String chosenStore = StoreService.readStore();
+        Store store = StoreService.searchStore(chosenStore,Main.getStores());
+        if(store == null) return;
+
+        String chosenSection = readSection(store);
+
+        System.out.println("Alege un nume nou:");
+        newData =  UtilService.getScanner().next();
+
+        update(Main.getFileName(),new Section(0,newData),chosenStore,chosenSection,Main.getStores());
+    }
+
+    public static void deleteSection(){
+        String chosenSection = "";
+        String chosenStore = StoreService.readStore();
+        Store store = StoreService.searchStore(chosenStore,Main.getStores());
+        if(store == null) return;
+
+        chosenSection = readSection(store);
+        delete(Main.getFileName(),chosenSection,chosenStore,Main.getStores());
     }
 }

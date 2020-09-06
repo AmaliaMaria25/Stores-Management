@@ -7,6 +7,7 @@ import com.java.models.Store;
 import java.beans.XMLEncoder;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,22 +40,20 @@ public class GenericService<T,K> {
         }
     }
 
-    protected  void update(final String FILE,T object, K... level ){
+    protected void update(final String FILE,T object, K... level ){
 
     }
 
-    protected  void delete(final String FILE,K name,K... level){
+    protected void delete(final String FILE,K name,K... level){
 
     }
 
-/*
-    protected  T searchFirst(final String FILE, K name,K... level){
-
+    protected T searchFirst(final String FILE, K name,K... level){
+        return null;
     }
 
-    protected  List<T> searchAll(final String FILE, K name,K... level) {
-
+    protected List<T> searchAll(final String FILE, K name,K... level) {
+       return null;
     }
-*/
 
 }

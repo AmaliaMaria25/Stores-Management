@@ -1,14 +1,16 @@
 package com.java.services;
 
+import com.java.exceptions.InvalidNumericInputException;
 import com.java.models.Store;
 
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.*;
 import java.util.List;
+import java.util.Scanner;
 
 public class UtilService {
-
+    private static Scanner scanner = new Scanner(System.in);
     public static String readValue() {
         //Enter data using BufferReader
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -25,40 +27,16 @@ public class UtilService {
         }
     }
 
-    public static boolean isNumeric(final String value) {
+    public static boolean isNumeric(final String value) throws InvalidNumericInputException {
         if (value == null) {
             return false;
         }
         try {
             final int numeric = Integer.parseInt(value);
         } catch (NumberFormatException e) {
-            return false;
+            throw new InvalidNumericInputException();
         }
         return true;
-    }
-
-    public static void mainMenuSelection() {
-        System.out.println("Choose an option:");
-        System.out.println("1 - Load stores");
-        System.out.println("2 - Create new store");
-        System.out.println("3 - Create new section");
-        System.out.println("4 - Create new product");
-
-        final String selected = readValue();
-        if(isNumeric(selected))
-        {
-            final int selectedValue = Integer.parseInt(selected);
-            if(selectedValue == 1) {
-                loadStores();
-            }
-            else if(selectedValue == 2) {
-                createNewStore();
-            }
-        }
-    }
-
-    public static void loadStores() {
-
     }
 
     public static void createNewStore() {
@@ -100,4 +78,9 @@ public class UtilService {
         }
         return null;
     }
+
+    public static Scanner getScanner() {
+        return scanner;
+    }
+
 }

@@ -1,9 +1,11 @@
 package com.java.services;
 
+import com.java.Main;
 import com.java.models.Product;
 import com.java.models.Section;
 import com.java.models.Store;
 
+import javax.rmi.CORBA.Util;
 import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -29,14 +31,14 @@ public class ProductService {
         UtilService.writeInXML(FILE_NAME,storeList);
     }
 
-    public static void update(final String FILE_NAME, String storeName, String sectionName, Product product, List<Store> storeList){
+    public static void update(final String FILE_NAME, String storeName, String sectionName, String productName, Product product, List<Store> storeList){
         Store searchedStore = StoreService.searchStore(storeName,storeList);
         if(searchedStore == null) return;
 
         Section searchedSection = SectionService.searchSection(sectionName,searchedStore.getSections());
         if(searchedSection == null) return;
 
-        Product searchedProduct = searchProduct(product.getName(),searchedSection.getProducts());
+        Product searchedProduct = searchProduct(productName,searchedSection.getProducts());
         if(searchedProduct == null) return;
 
         searchedProduct.setId(product.getId());
@@ -62,13 +64,83 @@ public class ProductService {
         UtilService.writeInXML(FILE_NAME,storeList);
     }
 
-    public static Product searchProduct(String productName, Set<Product> productSet){
-        try{
-            return productSet.stream().filter(item-> item.getName().compareTo(productName) == 0).findFirst().get();
-        }catch(NoSuchElementException exception){
+    public static Product searchProduct(String productName, Set<Product> productSet) {
+        try {
+            return productSet.stream().filter(item -> item.getName().compareTo(productName) == 0).findFirst().get();
+        } catch (NoSuchElementException exception) {
             System.out.println("Could not find the store with the specified name;");
             exception.printStackTrace();
         }
         return null;
     }
+
+    public static void createProduct(){
+        Store store;
+        Section section;
+        String chosenStore = "";
+        String chosenSection="";
+        String productName="";
+
+        StoreService.readStore();
+        store = StoreService.searchStore(chosenStore,Main.getStores());
+        if(store==null) return;
+
+       SectionService.readSection(store);
+        section = SectionService.searchSection(chosenSection,store.getSections());
+        if(section == null) return;
+
+        System.out.println("Choose an unique product name for this store and section: ");
+        productName=UtilService.getScanner().next();
+
+        add(Main.getFileName(),chosenStore,chosenSection,new Product(0,productName),Main.getStores());
+    }
+
+    public static String readProduct(Section section){
+        String chosenProduct = "";
+        System.out.println("Tasteaza produsul dorit: ");
+        for(Product product:section.getProducts()){
+            System.out.println(product.getName()+"\t");
+        }
+        chosenProduct = UtilService.getScanner().next();
+        return chosenProduct;
+    }
+
+
+
+    public static void editProduct(){
+        String newData = "";
+        String chosenSection = "";
+        String chosenProduct = "";
+        String chosenStore = StoreService.readStore();
+        Store store = StoreService.searchStore(chosenStore,Main.getStores());
+        if(store == null) return;
+
+        chosenSection = SectionService.readSection(store);
+        Section section = SectionService.searchSection(chosenSection,store.getSections());
+        if(section == null) return;
+
+        chosenProduct = readProduct(section);
+
+        System.out.println("Alege un nume nou:");
+        newData =  UtilService.getScanner().next();
+
+        update(Main.getFileName(),chosenStore,chosenSection,chosenProduct,new Product(0,newData),Main.getStores());
+    }
+
+    public static void deleteProduct(){
+        String chosenProduct = "";
+        String chosenSection = "";
+        String chosenStore = StoreService.readStore();
+        Store store = StoreService.searchStore(chosenStore,Main.getStores());
+        if(store == null) return;
+
+        chosenSection = SectionService.readSection(store);
+        Section section = SectionService.searchSection(chosenSection,store.getSections());
+        if(section == null) return;
+
+        chosenProduct = readProduct(section);
+
+        delete(Main.getFileName(),chosenStore,chosenSection,chosenProduct,Main.getStores());
+    }
+
 }
