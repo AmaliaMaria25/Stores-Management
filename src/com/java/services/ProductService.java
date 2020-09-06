@@ -68,8 +68,7 @@ public class ProductService {
         try {
             return productSet.stream().filter(item -> item.getName().compareTo(productName) == 0).findFirst().get();
         } catch (NoSuchElementException exception) {
-            System.out.println("Could not find the store with the specified name;");
-            exception.printStackTrace();
+            System.out.println("Could not find the product with the specified name;");
         }
         return null;
     }
@@ -81,11 +80,11 @@ public class ProductService {
         String chosenSection="";
         String productName="";
 
-        StoreService.readStore();
+        chosenStore = StoreService.readStore();
         store = StoreService.searchStore(chosenStore,Main.getStores());
         if(store==null) return;
 
-       SectionService.readSection(store);
+       chosenSection = SectionService.readSection(store);
         section = SectionService.searchSection(chosenSection,store.getSections());
         if(section == null) return;
 
@@ -143,4 +142,23 @@ public class ProductService {
         delete(Main.getFileName(),chosenStore,chosenSection,chosenProduct,Main.getStores());
     }
 
+    public static void display(Section section){
+        try {
+            section.getProducts().forEach(System.out::println);
+        }catch(NullPointerException nullPointerException){
+            System.out.println("Nu s-au putut gasi produse ale acestei sectiuni");
+        }
+    }
+
+    public static void displayProducts(){
+        String chosenStore = StoreService.readStore();
+        Store store = StoreService.searchStore(chosenStore,Main.getStores());
+        if(store == null) return;
+
+        String chosenSection = SectionService.readSection(store);
+        Section section = SectionService.searchSection(chosenSection,store.getSections());
+        if(section == null) return;
+
+        display(section);
+    }
 }

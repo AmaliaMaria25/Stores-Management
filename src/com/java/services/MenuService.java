@@ -28,12 +28,11 @@ public class MenuService {
                 final int selectedValue = Integer.parseInt(selected);
                 if (selectedValue == 1) {
                     //Option "Display" is selected
-                    /*switch (option) {
-                        case "Stores": StoreService.loadStores(); break;
-                        case "Sections": SectionService.loadSections(); break;
-                        case "Products": ProductService.loadProducts(); break;
+                    switch (option) {
+                        case "Stores": StoreService.displayStores(); break;
+                        case "Sections": SectionService.displaySections(); break;
+                        case "Products": ProductService.displayProducts(); break;
                     }
-                     */
                     pause();
                     secondaryMenu(option);
                 } else if (selectedValue == 2) {

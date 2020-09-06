@@ -43,7 +43,6 @@ public class StoreService {
             return storeList.stream().filter(item -> item.getName().compareTo(name) == 0).findFirst().get();
         } catch (NoSuchElementException exception) {
             System.out.println("Could not find the store with the specified name;");
-            exception.printStackTrace();
         }
         return null;
     }
@@ -78,5 +77,13 @@ public class StoreService {
     public static void deleteStore(){
         String chosenStore = readStore();
         delete(Main.getFileName(),chosenStore,Main.getStores());
+    }
+
+    public static void display(List<Store> storeList){
+        storeList.forEach(System.out::println);
+    }
+
+    public static void displayStores(){
+        display(Main.getStores());
     }
 }

@@ -55,8 +55,7 @@ public class SectionService {
         try {
             return sectionList.stream().filter(section -> section.getName().compareTo(sectionName) == 0).findFirst().get();
         } catch (NoSuchElementException exception) {
-            System.out.println("Could not find the store with the specified name;");
-            exception.printStackTrace();
+            System.out.println("Could not find the section with the specified name;");
         }
         return null;
     }
@@ -65,7 +64,7 @@ public class SectionService {
         String chosenStore = "";
         String sectionName="";
 
-        StoreService.readStore();
+        chosenStore = StoreService.readStore();
         if(StoreService.searchStore(chosenStore,Main.getStores()) == null) return;
 
         System.out.println("Alege un nume unic de sectiune din depozitul ales");
@@ -105,5 +104,19 @@ public class SectionService {
 
         chosenSection = readSection(store);
         delete(Main.getFileName(),chosenSection,chosenStore,Main.getStores());
+    }
+
+    public static void display(Store store){
+        try {
+            store.getSections().forEach(System.out::println);
+        }catch(NullPointerException nullPointerException){
+        System.out.println("Nu s-au putut gasi sectiuni ale acestui depozit");
+    }
+    }
+
+    public static void displaySections(){
+        String chosenStore = StoreService.readStore();
+        Store store = StoreService.searchStore(chosenStore,Main.getStores());
+        display(store);
     }
 }
