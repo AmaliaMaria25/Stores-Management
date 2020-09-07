@@ -1,5 +1,6 @@
 package com.java.services;
 
+import com.java.Main;
 import com.java.exceptions.InvalidNumericInputException;
 
 public class MenuService {
@@ -27,42 +28,38 @@ public class MenuService {
                 final int selectedValue = Integer.parseInt(selected);
                 if (selectedValue == 1) {
                     //Option "Display" is selected
-                    /*switch (option) {
-                        case "Stores": StoreService.loadStores(); break;
-                        case "Sections": SectionService.loadSections(); break;
-                        case "Products": ProductService.loadProducts(); break;
+                    switch (option) {
+                        case "Stores": StoreService.displayStores(); break;
+                        case "Sections": SectionService.displaySections(); break;
+                        case "Products": ProductService.displayProducts(); break;
                     }
-                     */
                     pause();
                     secondaryMenu(option);
                 } else if (selectedValue == 2) {
                     //Option "Create" is selected
-                    /*switch (option) {
+                    switch (option) {
                         case "Stores": StoreService.createStore(); break;
                         case "Sections": SectionService.createSection(); break;
                         case "Products": ProductService.createProduct(); break;
                     }
-                     */
                     pause();
                     secondaryMenu(option);
                 } else if (selectedValue == 3) {
                     //Option "Edit" is selected
-                    /* switch (option) {
+                     switch (option) {
                          case "Stores": StoreService.editStore(); break;
                          case "Sections": SectionService.editSection(); break;
                          case "Products": ProductService.editProduct(); break;
                        }
-                    */
                     pause();
                     secondaryMenu(option);
                 } else if (selectedValue == 4) {
                     //Option "Delete" is selected
-                    /*switch (option) {
+                    switch (option) {
                          case "Stores": StoreService.deleteStore(); break;
                          case "Sections": SectionService.deleteSection(); break;
                          case "Products": ProductService.deleteProduct(); break;
                      }
-                     */
                      pause();
                      secondaryMenu(option);
                 } else if (selectedValue == 5) {
@@ -110,6 +107,7 @@ public class MenuService {
                 } else if (selectedValue == 4) {
                     //Option "Display" is selected
                     //displayAll();
+                    System.out.println(Main.getStores());
                     pause();
                     mainMenu();
                 } else if (selectedValue == 5) {
@@ -145,7 +143,7 @@ public class MenuService {
         System.out.println("1 - Stores");
         System.out.println("2 - Sections");
         System.out.println("3 - Products");
-        System.out.println("4 - Display");
+        System.out.println("4 - Display all data");
         System.out.println("5 - Export CSV");
         System.out.println("6 - Archive CSV as Zip");
         System.out.println("7 - Exit");
