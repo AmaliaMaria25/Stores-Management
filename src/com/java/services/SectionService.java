@@ -4,7 +4,7 @@ import com.java.Main;
 import com.java.models.Section;
 import com.java.models.Store;
 
-import javax.rmi.CORBA.Util;
+//import javax.rmi.CORBA.Util;
 import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -22,7 +22,8 @@ public class SectionService {
         }
         store.getSections().add(section);
 
-        UtilService.writeInXML(FILE_NAME,storeList);
+        UtilService.writeInXML(FILE_NAME.concat(".csv"),storeList);
+        UtilService.writeInCSV(FILE_NAME.concat(".csv"), storeList);
     }
 
     public static void update(final String FILE_NAME, Section section, String storeName, String sectionName, List<Store> storeList){
@@ -35,7 +36,8 @@ public class SectionService {
         searchedSection.setId(section.getId());
         searchedSection.setName(section.getName());
 
-        UtilService.writeInXML(FILE_NAME,storeList);
+        UtilService.writeInXML(FILE_NAME.concat(".xml"),storeList);
+        UtilService.writeInCSV(FILE_NAME.concat(".csv"), storeList);
     }
 
     public static void delete(final String FILE_NAME, String sectionName, String storeName, List<Store> storeList){
@@ -47,7 +49,8 @@ public class SectionService {
 
         store.getSections().remove(searchedSection);
 
-        UtilService.writeInXML(FILE_NAME,storeList);
+        UtilService.writeInXML(FILE_NAME.concat(".xml"),storeList);
+        UtilService.writeInCSV(FILE_NAME.concat(".csv"), storeList);
     }
 
 

@@ -16,7 +16,8 @@ public class StoreService {
             return;
         }
         storeList.add(store);
-        UtilService.writeInXML(FILE_NAME, storeList);
+        UtilService.writeInXML(FILE_NAME.concat(".xml"), storeList);
+        UtilService.writeInCSV(FILE_NAME.concat(".csv"), storeList);
     }
 
     public static void update(final String FILE_NAME,String storeName, Store store, List<Store> storeList){
@@ -26,7 +27,8 @@ public class StoreService {
         searchedStore.setId(store.getId());
         searchedStore.setName(store.getName());
 
-        UtilService.writeInXML(FILE_NAME,storeList);
+        UtilService.writeInXML(FILE_NAME.concat(".xml"), storeList);
+        UtilService.writeInCSV(FILE_NAME.concat(".csv"), storeList);
     }
 
     public static void delete(final String FILE_NAME, String name, List<Store> storeList){
@@ -35,7 +37,8 @@ public class StoreService {
 
         storeList.remove(searchedStore);
 
-        UtilService.writeInXML(FILE_NAME,storeList);
+        UtilService.writeInXML(FILE_NAME.concat(".xml"), storeList);
+        UtilService.writeInCSV(FILE_NAME.concat(".csv"), storeList);
     }
 
     public static Store searchStore(String name,List<Store> storeList) {
@@ -80,7 +83,7 @@ public class StoreService {
     }
 
     public static void display(List<Store> storeList){
-        storeList.forEach(System.out::println);
+        storeList.forEach((store) -> System.out.println(store.getName()));
     }
 
     public static void displayStores(){

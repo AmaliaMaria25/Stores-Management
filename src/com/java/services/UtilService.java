@@ -6,8 +6,14 @@ import com.java.models.Store;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Scanner;
+import java.util.StringJoiner;
+import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 public class UtilService {
     private static Scanner scanner = new Scanner(System.in);
@@ -55,6 +61,43 @@ public class UtilService {
         }
     }
 
+    public static void writeInCSV(final String FILE_NAME, List<Store> storeList) {
+        //final String HEAD = "Store, Section, Product\n";
+        //final String COMMA_DELIMITER = ",";
+        //final String NEW_LINE_SEPARATOR = "\n";
+
+        /*try {
+            FileOutputStream fileoutput = new FileOutputStream(FILE_NAME);
+            ObjectOutputStream objectoutput = new ObjectOutputStream(fileoutput);
+            objectoutput.writeObject(storeList);
+
+        }
+        catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }*/
+
+        File file = new File(FILE_NAME);
+        FileWriter fw = null;
+        try {
+            fw = new FileWriter(file);
+            BufferedWriter bw = new BufferedWriter(fw);
+
+            bw.write("Store");
+            bw.newLine();
+            for(int i=0;i<storeList.size();i++)
+            {
+                bw.write(storeList.get(i).getName());
+                bw.newLine();
+            }
+            bw.write("\n");
+            bw.newLine();
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static List<Store> getAllData(final String FILE_NAME){
         try (FileInputStream fileInputStream = new FileInputStream(new File(FILE_NAME));
              XMLDecoder xmlDecoder = new XMLDecoder(fileInputStream)) {
@@ -76,4 +119,28 @@ public class UtilService {
         return scanner;
     }
 
-}
+    public static void archiveAsZip() {
+        try {
+            String sourceFile = "section.csv";
+            File file = new File(sourceFile);
+
+            FileOutputStream fileoutput = new FileOutputStream("compressed.zip");
+            ZipOutputStream zipoutput = new ZipOutputStream(fileoutput);
+
+            zipoutput.putNextEntry(new ZipEntry(file.getName()));
+
+            byte[] bytes = Files.readAllBytes(Paths.get("section.csv"));
+            zipoutput.write(bytes, 0, bytes.length);
+            zipoutput.closeEntry();
+            zipoutput.close();
+
+        } catch (FileNotFoundException ex) {
+            System.err.format("The file %s does not exist", "section.csv");
+        } catch (IOException ex) {
+            System.err.println("I/O error: " + ex);
+        }
+        }
+    }
+
+
+
