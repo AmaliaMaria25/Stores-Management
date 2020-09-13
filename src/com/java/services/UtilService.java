@@ -62,20 +62,6 @@ public class UtilService {
     }
 
     public static void writeInCSV(final String FILE_NAME, List<Store> storeList) {
-        //final String HEAD = "Store, Section, Product\n";
-        //final String COMMA_DELIMITER = ",";
-        //final String NEW_LINE_SEPARATOR = "\n";
-
-        /*try {
-            FileOutputStream fileoutput = new FileOutputStream(FILE_NAME);
-            ObjectOutputStream objectoutput = new ObjectOutputStream(fileoutput);
-            objectoutput.writeObject(storeList);
-
-        }
-        catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }*/
 
         File file = new File(FILE_NAME);
         FileWriter fw = null;
