@@ -5,7 +5,6 @@ import com.java.models.Product;
 import com.java.models.Section;
 import com.java.models.Store;
 
-import javax.rmi.CORBA.Util;
 import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -29,6 +28,8 @@ public class ProductService {
         section.getProducts().add(product);
 
         UtilService.writeInXML(FILE_NAME,storeList);
+
+        System.out.println("");
     }
 
     public static void update(final String FILE_NAME, String storeName, String sectionName, String productName, Product product, List<Store> storeList){
@@ -68,7 +69,7 @@ public class ProductService {
         try {
             return productSet.stream().filter(item -> item.getName().compareTo(productName) == 0).findFirst().get();
         } catch (NoSuchElementException exception) {
-            System.out.println("Could not find the product with the specified name;");
+            //System.out.println("Could not find the product with the specified name;");
         }
         return null;
     }
@@ -96,7 +97,7 @@ public class ProductService {
 
     public static String readProduct(Section section){
         String chosenProduct = "";
-        System.out.println("Tasteaza produsul dorit: ");
+        System.out.println("Type product name: ");
         for(Product product:section.getProducts()){
             System.out.println(product.getName()+"\t");
         }
@@ -120,7 +121,7 @@ public class ProductService {
 
         chosenProduct = readProduct(section);
 
-        System.out.println("Alege un nume nou:");
+        System.out.println("Choose a new name:");
         newData =  UtilService.getScanner().next();
 
         update(Main.getFileName(),chosenStore,chosenSection,chosenProduct,new Product(0,newData),Main.getStores());
@@ -146,7 +147,7 @@ public class ProductService {
         try {
             section.getProducts().forEach(System.out::println);
         }catch(NullPointerException nullPointerException){
-            System.out.println("Nu s-au putut gasi produse ale acestei sectiuni");
+            System.out.println("Couldn't find any products of this section");
         }
     }
 

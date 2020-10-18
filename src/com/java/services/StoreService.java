@@ -42,20 +42,20 @@ public class StoreService {
         try {
             return storeList.stream().filter(item -> item.getName().compareTo(name) == 0).findFirst().get();
         } catch (NoSuchElementException exception) {
-            System.out.println("Could not find the store with the specified name;");
+            //System.out.println("Could not find the store with the specified name;");
         }
         return null;
     }
 
     public static void createStore(){
-        System.out.println("Alege un nume unic pentru depozit");
+        System.out.println("Choose an unique deposit name");
         String storeName = UtilService.getScanner().next();
         add(Main.getFileName(),new Store(0,storeName),Main.getStores());
     }
 
     public static String readStore(){
         String chosenStore = "";
-        System.out.println("Tasteaza depozitul dorit:");
+        System.out.println("Type the wanted storage:");
         for(Store store: Main.getStores()){
             System.out.print(store.getName()+"\t");
         }
@@ -68,7 +68,7 @@ public class StoreService {
         String newData = "";
         String chosenStore = readStore();
 
-        System.out.println("Alege un nume nou:");
+        System.out.println("Choose a new name:");
         newData = UtilService.getScanner().next();
 
         update(Main.getFileName(),chosenStore,new Store(0,newData),Main.getStores());
