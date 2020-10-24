@@ -117,7 +117,7 @@ public class MenuService {
                     mainMenu();
                 } else if (selectedValue == 6) {
                     //Option "Archive CSV as Zip" is selected
-                    //archiveAsZip();
+                    UtilService.archiveAsZip();
                     pause();
                     mainMenu();
                 } else if (selectedValue == 7) {
@@ -144,8 +144,8 @@ public class MenuService {
         System.out.println("2 - Sections");
         System.out.println("3 - Products");
         System.out.println("4 - Display all data");
-        System.out.println("5 - Export CSV");
-        System.out.println("6 - Archive CSV as Zip");
+        System.out.println("5 - Save CSV");
+        System.out.println("6 - Archive File as Zip");
         System.out.println("7 - Exit");
         mainMenuSelection();
     }

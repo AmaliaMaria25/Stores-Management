@@ -5,6 +5,9 @@ import com.java.models.Product;
 import com.java.models.Section;
 import com.java.models.Store;
 
+
+//import javax.rmi.CORBA.Util;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -27,9 +30,9 @@ public class ProductService {
 
         section.getProducts().add(product);
 
-        UtilService.writeInXML(FILE_NAME,storeList);
+        UtilService.writeInXML(FILE_NAME.concat(".xml"),storeList);
+        UtilService.writeInCSV(FILE_NAME.concat(".csv"), storeList);
 
-        System.out.println("");
     }
 
     public static void update(final String FILE_NAME, String storeName, String sectionName, String productName, Product product, List<Store> storeList){
@@ -47,7 +50,8 @@ public class ProductService {
         searchedProduct.setName(product.getName());
         searchedProduct.setPrice(product.getPrice());
 
-        UtilService.writeInXML(FILE_NAME,storeList);
+        UtilService.writeInXML(FILE_NAME.concat(".xml"),storeList);
+        UtilService.writeInCSV(FILE_NAME.concat(".csv"), storeList);
     }
 
     public static void delete(final String FILE_NAME, String storeName, String sectionName, String productName, List<Store> storeList){
@@ -62,7 +66,8 @@ public class ProductService {
 
         searchedSection.getProducts().remove(searchedProduct);
 
-        UtilService.writeInXML(FILE_NAME,storeList);
+        UtilService.writeInXML(FILE_NAME.concat(".xml"),storeList);
+        UtilService.writeInCSV(FILE_NAME.concat(".csv"), storeList);
     }
 
     public static Product searchProduct(String productName, Set<Product> productSet) {
