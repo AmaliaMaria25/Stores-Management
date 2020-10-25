@@ -6,12 +6,13 @@ import com.java.models.Store;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 public class StoreService {
     public static void add(final String FILE_NAME, Store store, List<Store> storeList) {
         if(storeList == null) storeList = new ArrayList<>();
 
-        if(searchStore(store.getName(),storeList) != null){
+        if(searchStore(store.getName(),storeList).isPresent()){
             System.out.println("Store already exist!");
             return;
         }
@@ -21,33 +22,30 @@ public class StoreService {
     }
 
     public static void update(final String FILE_NAME,String storeName, Store store, List<Store> storeList){
-        Store searchedStore = searchStore(storeName,storeList);
-        if(searchedStore == null) return;
+        Optional<Store> searchedStore = searchStore(storeName,storeList);
+        if(!searchedStore.isPresent()) return;
 
-        searchedStore.setId(store.getId());
-        searchedStore.setName(store.getName());
+        searchedStore.get().setId(store.getId());
+        searchedStore.get().setName(store.getName());
 
         UtilService.writeInXML(FILE_NAME.concat(".xml"), storeList);
         UtilService.writeInCSV(FILE_NAME.concat(".csv"), storeList);
     }
 
     public static void delete(final String FILE_NAME, String name, List<Store> storeList){
-        Store searchedStore = searchStore(name,storeList);
-        if(searchedStore == null) return;
+        Optional<Store> searchedStore = searchStore(name,storeList);
+        if(!searchedStore.isPresent()) return;
 
-        storeList.remove(searchedStore);
+        storeList.remove(searchedStore.get());
 
         UtilService.writeInXML(FILE_NAME.concat(".xml"), storeList);
         UtilService.writeInCSV(FILE_NAME.concat(".csv"), storeList);
     }
 
-    public static Store searchStore(String name,List<Store> storeList) {
-        try {
-            return storeList.stream().filter(item -> item.getName().compareTo(name) == 0).findFirst().get();
-        } catch (NoSuchElementException exception) {
-            //System.out.println("Could not find the store with the specified name;");
-        }
-        return null;
+    public static Optional<Store> searchStore(String name, List<Store> storeList) {
+            return storeList.stream()
+                    .filter(item -> item.getName().equals(0))
+                    .findFirst();
     }
 
     public static void createStore(){
