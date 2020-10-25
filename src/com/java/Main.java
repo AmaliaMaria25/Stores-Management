@@ -21,7 +21,7 @@ public class Main {
         UtilService.archiveAsZip();
     }
     private static void init(){
-        stores = UtilService.getAllData(FILE_NAME);
+        stores = UtilService.getAllData(FILE_NAME+".xml");
         if(stores == null) stores = new ArrayList<>();
 
     }

@@ -97,6 +97,7 @@ public class UtilService {
             } while (object != null);
 
         } catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
         return null;
     }
