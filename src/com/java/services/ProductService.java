@@ -8,14 +8,17 @@ import com.java.models.Store;
 
 //import javax.rmi.CORBA.Util;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Set;
 
 public class ProductService {
     public static void add(final String FILE_NAME, String storeName, String sectionName, Product product, List<Store> storeList){
-        Optional<Store> store = StoreService.searchStore(storeName,storeList);
-        if(!store.isPresent()) return;
+        Store store = StoreService.searchStore(storeName,storeList);
+        if(store == null) return;
 
-        Section section = SectionService.searchSection(sectionName,store.get().getSections());
+        Section section = SectionService.searchSection(sectionName,store.getSections());
         if(section == null) return;
 
         if(section.getProducts() == null) section.setProducts(new HashSet<>());
@@ -33,10 +36,10 @@ public class ProductService {
     }
 
     public static void update(final String FILE_NAME, String storeName, String sectionName, String productName, Product product, List<Store> storeList){
-        Optional<Store> searchedStore = StoreService.searchStore(storeName,storeList);
-        if(!searchedStore.isPresent()) return;
+        Store searchedStore = StoreService.searchStore(storeName,storeList);
+        if(searchedStore == null) return;
 
-        Section searchedSection = SectionService.searchSection(sectionName,searchedStore.get().getSections());
+        Section searchedSection = SectionService.searchSection(sectionName,searchedStore.getSections());
         if(searchedSection == null) return;
 
         Product searchedProduct = searchProduct(productName,searchedSection.getProducts());
@@ -52,10 +55,10 @@ public class ProductService {
     }
 
     public static void delete(final String FILE_NAME, String storeName, String sectionName, String productName, List<Store> storeList){
-        Optional<Store> searchedStore = StoreService.searchStore(storeName,storeList);
-        if(!searchedStore.isPresent()) return;
+        Store searchedStore = StoreService.searchStore(storeName,storeList);
+        if(searchedStore == null) return;
 
-        Section searchedSection = SectionService.searchSection(sectionName,searchedStore.get().getSections());
+        Section searchedSection = SectionService.searchSection(sectionName,searchedStore.getSections());
         if(searchedSection == null) return;
 
         Product searchedProduct = searchProduct(productName,searchedSection.getProducts());
@@ -77,7 +80,7 @@ public class ProductService {
     }
 
     public static void createProduct(){
-        Optional<Store> store;
+        Store store;
         Section section;
         String chosenStore = "";
         String chosenSection="";
@@ -85,10 +88,10 @@ public class ProductService {
 
         chosenStore = StoreService.readStore();
         store = StoreService.searchStore(chosenStore,Main.getStores());
-        if(!store.isPresent()) return;
+        if(store==null) return;
 
-       chosenSection = SectionService.readSection(store.get());
-        section = SectionService.searchSection(chosenSection,store.get().getSections());
+       chosenSection = SectionService.readSection(store);
+        section = SectionService.searchSection(chosenSection,store.getSections());
         if(section == null) return;
 
         System.out.println("Choose an unique product name for this store and section: ");
@@ -114,11 +117,11 @@ public class ProductService {
         String chosenSection = "";
         String chosenProduct = "";
         String chosenStore = StoreService.readStore();
-        Optional<Store> store = StoreService.searchStore(chosenStore,Main.getStores());
-        if(!store.isPresent()) return;
+        Store store = StoreService.searchStore(chosenStore,Main.getStores());
+        if(store == null) return;
 
-        chosenSection = SectionService.readSection(store.get());
-        Section section = SectionService.searchSection(chosenSection,store.get().getSections());
+        chosenSection = SectionService.readSection(store);
+        Section section = SectionService.searchSection(chosenSection,store.getSections());
         if(section == null) return;
 
         chosenProduct = readProduct(section);
@@ -133,11 +136,11 @@ public class ProductService {
         String chosenProduct = "";
         String chosenSection = "";
         String chosenStore = StoreService.readStore();
-        Optional<Store> store = StoreService.searchStore(chosenStore,Main.getStores());
-        if(!store.isPresent()) return;
+        Store store = StoreService.searchStore(chosenStore,Main.getStores());
+        if(store == null) return;
 
-        chosenSection = SectionService.readSection(store.get());
-        Section section = SectionService.searchSection(chosenSection,store.get().getSections());
+        chosenSection = SectionService.readSection(store);
+        Section section = SectionService.searchSection(chosenSection,store.getSections());
         if(section == null) return;
 
         chosenProduct = readProduct(section);
@@ -155,11 +158,11 @@ public class ProductService {
 
     public static void displayProducts(){
         String chosenStore = StoreService.readStore();
-        Optional<Store> store = StoreService.searchStore(chosenStore,Main.getStores());
-        if(!store.isPresent()) return;
+        Store store = StoreService.searchStore(chosenStore,Main.getStores());
+        if(store == null) return;
 
-        String chosenSection = SectionService.readSection(store.get());
-        Section section = SectionService.searchSection(chosenSection,store.get().getSections());
+        String chosenSection = SectionService.readSection(store);
+        Section section = SectionService.searchSection(chosenSection,store.getSections());
         if(section == null) return;
 
         display(section);

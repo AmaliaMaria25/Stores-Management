@@ -17,14 +17,15 @@ import java.util.zip.ZipOutputStream;
 
 public class UtilService {
     private static Scanner scanner = new Scanner(System.in);
-
     public static String readValue() {
         //Enter data using BufferReader
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         // Reading data using readLine
         try {
-            return reader.readLine();
+            final String s;
+            s = reader.readLine();
+            return s;
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
@@ -33,15 +34,15 @@ public class UtilService {
     }
 
     public static boolean isNumeric(final String value) throws InvalidNumericInputException {
-        if (value == null)
-            return false;
-
-        try {
-            Integer.parseInt(value);
-            return true;
-        } catch (NumberFormatException e) {
+        if (value == null) {
             return false;
         }
+        try {
+            final int numeric = Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            throw new InvalidNumericInputException();
+        }
+        return true;
     }
 
     public static void createNewStore() {
@@ -119,11 +120,13 @@ public class UtilService {
             zipoutput.closeEntry();
             zipoutput.close();
 
+        } catch (FileNotFoundException ex) {
+            System.err.format("The file %s does not exist", "section.csv");
         } catch (IOException ex) {
-            ex.printStackTrace();
+            System.err.println("I/O error: " + ex);
+        }
         }
     }
-}
 
 
 
