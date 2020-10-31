@@ -203,11 +203,11 @@ public class ProductService {
     }
 
     public static void display(Section section) {
-        try {
-            section.getProducts().forEach(product -> System.out.println(product.getName()));
-        } catch (NullPointerException nullPointerException) {
+        if (section.getProducts() == null) {
             System.out.println("Couldn't find any products of this section");
+            return;
         }
+        section.getProducts().forEach(product -> System.out.println(product.getName()));
     }
 
     public static void displayProducts() {

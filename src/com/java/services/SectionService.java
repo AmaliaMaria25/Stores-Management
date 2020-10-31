@@ -143,11 +143,11 @@ public class SectionService {
     }
 
     public static void display(Store store) {
-        try {
-            store.getSections().forEach(section -> System.out.println(section.getName()));
-        } catch (NullPointerException nullPointerException) {
+        if (store.getSections() == null) {
             System.out.println("Couldn't find any sections of this storage");
+            return;
         }
+        store.getSections().forEach(section -> System.out.println(section.getName()));
     }
 
     public static void displaySections() {
