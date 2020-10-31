@@ -3,11 +3,13 @@ package com.java.services;
 import com.java.Main;
 import com.java.models.Section;
 import com.java.models.Store;
-import com.sun.webkit.dom.CharacterDataImpl;
-import sun.awt.image.ImageWatched;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 //import javax.rmi.CORBA.Util;
-import java.util.*;
 
 public class SectionService {
     public static void add(final String FILE_NAME, Section section, String storeName, List<Store> storeList) {
@@ -53,10 +55,8 @@ public class SectionService {
 
     public static void createSection() {
         Optional<Store> searchedStore;
-        String chosenStore = "";
-        String sectionName = "";
 
-        chosenStore = StoreService.readStore();
+        String chosenStore = StoreService.readStore();
 
         if (chosenStore.equals("")) return;
 
@@ -68,7 +68,7 @@ public class SectionService {
         if (searchedStore.get().getSections() == null) searchedStore.get().setSections(new HashSet<>());
 
         System.out.println("Choose a section name");
-        sectionName = UtilService.getScanner().next();
+        String sectionName = UtilService.getScanner().next();
 
         if (searchSection(sectionName, searchedStore.get().getSections()).isPresent()) {
             System.out.println("Section is already existent");
@@ -85,17 +85,15 @@ public class SectionService {
             return "";
         }
 
-        String chosenSection = "";
         System.out.println("Type the wanted section: ");
         for (Section loopSection : store.getSections()) {
             System.out.println(loopSection.getName() + "\t");
         }
-        chosenSection = UtilService.getScanner().next();
-        return chosenSection;
+
+        return UtilService.getScanner().next();
     }
 
     public static void editSection() {
-        String newData = "";
         String chosenStore = StoreService.readStore();
 
         if (chosenStore.equals("")) return;
@@ -116,13 +114,12 @@ public class SectionService {
         }
 
         System.out.println("Choose a new name:");
-        newData = UtilService.getScanner().next();
+        String newData = UtilService.getScanner().next();
 
         update(Main.getFileName(), new Section(0, newData), chosenStore, chosenSection, Main.getStores());
     }
 
     public static void deleteSection() {
-        String chosenSection = "";
         String chosenStore = StoreService.readStore();
 
         if (chosenStore.equals("")) return;
@@ -133,7 +130,7 @@ public class SectionService {
             return;
         }
 
-        chosenSection = readSection(store.get());
+        String chosenSection = readSection(store.get());
 
         if (chosenSection.equals("")) return;
 
@@ -147,7 +144,7 @@ public class SectionService {
 
     public static void display(Store store) {
         try {
-            store.getSections().forEach(section-> System.out.println(section.getName()));
+            store.getSections().forEach(section -> System.out.println(section.getName()));
         } catch (NullPointerException nullPointerException) {
             System.out.println("Couldn't find any sections of this storage");
         }

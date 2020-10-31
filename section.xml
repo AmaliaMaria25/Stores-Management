@@ -4,7 +4,7 @@
   <void method="add">
    <object class="com.java.models.Store">
     <void property="name">
-     <string>Store1</string>
+     <string>Store2</string>
     </void>
     <void property="sections">
      <object class="java.util.HashSet">
@@ -33,10 +33,7 @@
   <void method="add">
    <object class="com.java.models.Store">
     <void property="name">
-     <string>Store2</string>
-    </void>
-    <void property="sections">
-     <object class="java.util.HashSet"/>
+     <string>Store1</string>
     </void>
    </object>
   </void>

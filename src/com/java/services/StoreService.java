@@ -5,12 +5,12 @@ import com.java.models.Store;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 public class StoreService {
     public static void add(final String FILE_NAME, Store store, List<Store> storeList) {
         storeList.add(store);
+
         UtilService.writeInXML(FILE_NAME.concat(".xml"), storeList);
         UtilService.writeInCSV(FILE_NAME.concat(".csv"), storeList);
         System.out.println("[Store] " + store.getName() + " was added successfully");
@@ -64,18 +64,15 @@ public class StoreService {
             return "";
         }
 
-        String chosenStore = "";
         System.out.println("Type the wanted storage:");
         for (Store store : Main.getStores()) {
             System.out.print(store.getName() + "\t");
         }
 
-        chosenStore = UtilService.getScanner().next();
-        return chosenStore;
+        return UtilService.getScanner().next();
     }
 
     public static void editStore() {
-        String newData = "";
         String chosenStore = readStore();
 
         if (chosenStore.equals("")) return;
@@ -86,7 +83,7 @@ public class StoreService {
         }
 
         System.out.println("Choose a new name:");
-        newData = UtilService.getScanner().next();
+        String newData = UtilService.getScanner().next();
 
         update(Main.getFileName(), chosenStore, new Store(0, newData), Main.getStores());
     }

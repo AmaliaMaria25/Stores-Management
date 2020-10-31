@@ -5,18 +5,18 @@ import com.java.models.Product;
 import com.java.models.Section;
 import com.java.models.Store;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 //import javax.rmi.CORBA.Util;
-
-import java.util.*;
 
 public class ProductService {
     public static void add(final String FILE_NAME, String storeName, String sectionName, Product product, List<Store> storeList) {
         Optional<Store> store = StoreService.searchStore(storeName, storeList);
 
         Optional<Section> section = SectionService.searchSection(sectionName, store.get().getSections());
-
-        // if(section.get().getProducts() == null) section.get().setProducts(new HashSet<>());
 
         if (searchProduct(product.getName(), section.get().getProducts()).isPresent()) {
             System.out.println("The product already exist!");
@@ -84,11 +84,8 @@ public class ProductService {
     public static void createProduct() {
         Optional<Store> store;
         Optional<Section> section;
-        String chosenStore = "";
-        String chosenSection = "";
-        String productName = "";
 
-        chosenStore = StoreService.readStore();
+        String chosenStore = StoreService.readStore();
 
         if (chosenStore.equals("")) return;
 
@@ -98,7 +95,7 @@ public class ProductService {
             return;
         }
 
-        chosenSection = SectionService.readSection(store.get());
+        String chosenSection = SectionService.readSection(store.get());
 
         if (chosenSection.equals("")) return;
 
@@ -111,7 +108,7 @@ public class ProductService {
         if (section.get().getProducts() == null) section.get().setProducts(new HashSet<>());
 
         System.out.println("Choose an unique product name for this store and section: ");
-        productName = UtilService.getScanner().next();
+        String productName = UtilService.getScanner().next();
 
         if (searchProduct(productName, section.get().getProducts()).isPresent()) {
             System.out.println("Product is already existent");
@@ -133,16 +130,12 @@ public class ProductService {
         for (Product product : section.getProducts()) {
             System.out.println(product.getName() + "\t");
         }
-        chosenProduct = UtilService.getScanner().next();
-        return chosenProduct;
+
+        return UtilService.getScanner().next();
     }
 
 
     public static void editProduct() {
-        String newData = "";
-        String chosenSection = "";
-        String chosenProduct = "";
-
         String chosenStore = StoreService.readStore();
 
         if (chosenStore.equals("")) return;
@@ -153,7 +146,7 @@ public class ProductService {
             return;
         }
 
-        chosenSection = SectionService.readSection(store.get());
+        String chosenSection = SectionService.readSection(store.get());
 
         if (chosenSection.equals("")) return;
 
@@ -163,7 +156,7 @@ public class ProductService {
             return;
         }
 
-        chosenProduct = readProduct(section.get());
+        String chosenProduct = readProduct(section.get());
 
         if (chosenProduct.equals("")) return;
 
@@ -172,15 +165,12 @@ public class ProductService {
         }
 
         System.out.println("Choose a new name:");
-        newData = UtilService.getScanner().next();
+        String newData = UtilService.getScanner().next();
 
         update(Main.getFileName(), chosenStore, chosenSection, chosenProduct, new Product(0, newData), Main.getStores());
     }
 
     public static void deleteProduct() {
-        String chosenProduct = "";
-        String chosenSection = "";
-
         String chosenStore = StoreService.readStore();
 
         if (chosenStore.equals("")) return;
@@ -191,7 +181,7 @@ public class ProductService {
             return;
         }
 
-        chosenSection = SectionService.readSection(store.get());
+        String chosenSection = SectionService.readSection(store.get());
 
         if (chosenSection.equals("")) return;
 
@@ -201,7 +191,7 @@ public class ProductService {
             return;
         }
 
-        chosenProduct = readProduct(section.get());
+        String chosenProduct = readProduct(section.get());
 
         if (chosenProduct.equals("")) return;
 
