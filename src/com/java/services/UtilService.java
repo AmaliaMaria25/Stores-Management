@@ -1,6 +1,8 @@
 package com.java.services;
 
 import com.java.exceptions.InvalidNumericInputException;
+import com.java.models.Product;
+import com.java.models.Section;
 import com.java.models.Store;
 
 import java.beans.XMLDecoder;
@@ -10,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
@@ -17,6 +20,7 @@ import java.util.zip.ZipOutputStream;
 
 public class UtilService {
     private static Scanner scanner = new Scanner(System.in);
+
     public static String readValue() {
         //Enter data using BufferReader
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -24,8 +28,7 @@ public class UtilService {
         // Reading data using readLine
         try {
             return reader.readLine();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return null;
         }
@@ -50,7 +53,7 @@ public class UtilService {
         System.out.println("The store " + store.getName() + " was successfully created.");
     }
 
-    public static void writeInXML(final String FILE_NAME, List<Store> storeList){
+    public static void writeInXML(final String FILE_NAME, List<Store> storeList) {
         try (FileOutputStream fileOutputStream = new FileOutputStream(new File(FILE_NAME));
              XMLEncoder xmlEncoder = new XMLEncoder(fileOutputStream)) {
 
@@ -69,8 +72,7 @@ public class UtilService {
 
             bw.write("Store");
             bw.newLine();
-            for(int i=0;i<storeList.size();i++)
-            {
+            for (int i = 0; i < storeList.size(); i++) {
                 bw.write(storeList.get(i).getName());
                 bw.newLine();
             }
@@ -82,15 +84,15 @@ public class UtilService {
         }
     }
 
-    public static List<Store> getAllData(final String FILE_NAME){
+    public static List<Store> getAllData(final String FILE_NAME) {
         try (FileInputStream fileInputStream = new FileInputStream(new File(FILE_NAME));
              XMLDecoder xmlDecoder = new XMLDecoder(fileInputStream)) {
 
             Object object;
             do {
                 object = xmlDecoder.readObject();
-                if (object instanceof List && !((List) object).isEmpty() && ((List)object).get(0) instanceof Store) {
-                    return (List<Store>)object;
+                if (object instanceof List && !((List) object).isEmpty() && ((List) object).get(0) instanceof Store) {
+                    return (List<Store>) object;
                 }
             } while (object != null);
 
@@ -126,19 +128,34 @@ public class UtilService {
         }
     }
 
-    public static void displayStock(List<Store> stores){
-        stores.forEach(store->{
-            System.out.println("[Store]: "+store.getName());
-            if(store.getSections() != null)
-                store.getSections().forEach(section -> {
-                    System.out.println("\t[Section]: "+section.getName());
-                    if(section.getProducts() != null)
-                        section.getProducts().forEach(product -> {
-                            System.out.println("\t\t[Product]: "+product.getName());
-                        });
-                });
-        });
+    public static void displayStock(List<Store> stores) {
+        printStores(stores);
     }
+
+    public static void printStores(List<Store> stores) {
+        if (stores != null)
+            stores.forEach(store -> {
+                System.out.println("[Store]: " + store.getName());
+                printSections(store.getSections());
+            });
+    }
+
+    public static void printSections(Set<Section> sections) {
+        if (sections != null)
+            sections.forEach(section -> {
+                System.out.println("\t[Section]: " + section.getName());
+                printProducts(section.getProducts());
+            });
+    }
+
+    public static void printProducts(Set<Product> products) {
+        if (products != null)
+            products.forEach(product -> {
+                System.out.println("\t\t[Product]:" + product.getName());
+            });
+    }
+
+
 }
 
 

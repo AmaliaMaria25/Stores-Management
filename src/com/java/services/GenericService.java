@@ -35,7 +35,7 @@ public class GenericService<T,K> {
             }else if(object instanceof Product && level.length == 2){
 
             }
-        }catch(Exception ex){
+        }catch(Exception ex) {
             ex.printStackTrace();
         }
     }

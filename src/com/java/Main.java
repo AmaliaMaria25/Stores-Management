@@ -13,6 +13,7 @@ public class Main {
 
     private static final String FILE_NAME = "section";
     private static List<Store> stores;
+
     public static void main(String[] args) {
         init();
         MenuService.mainMenu();
@@ -20,9 +21,10 @@ public class Main {
         String FILE_NAME = args[0];
         UtilService.archiveAsZip();
     }
-    private static void init(){
-        stores = UtilService.getAllData(FILE_NAME+".xml");
-        if(stores == null) stores = new ArrayList<>();
+
+    private static void init() {
+        stores = UtilService.getAllData(FILE_NAME + ".xml");
+        if (stores == null) stores = new ArrayList<>();
 
     }
 
