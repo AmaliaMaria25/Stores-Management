@@ -214,7 +214,7 @@ public class ProductService {
 
     public static void display(Section section) {
         try {
-            section.getProducts().forEach(System.out::println);
+            section.getProducts().forEach(product -> System.out.println(product.getName()));
         } catch (NullPointerException nullPointerException) {
             System.out.println("Couldn't find any products of this section");
         }

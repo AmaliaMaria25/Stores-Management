@@ -147,7 +147,7 @@ public class SectionService {
 
     public static void display(Store store) {
         try {
-            store.getSections().forEach(System.out::println);
+            store.getSections().forEach(section-> System.out.println(section.getName()));
         } catch (NullPointerException nullPointerException) {
             System.out.println("Couldn't find any sections of this storage");
         }
