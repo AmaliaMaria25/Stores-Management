@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.8.0_251" class="java.beans.XMLDecoder">
+ <object class="java.util.ArrayList">
+  <void method="add">
+   <object class="com.java.models.Store">
+    <void property="name">
+     <string>Store1</string>
+    </void>
+    <void property="sections">
+     <object class="java.util.HashSet">
+      <void method="add">
+       <object class="com.java.models.Section">
+        <void property="name">
+         <string>Section11</string>
+        </void>
+        <void property="products">
+         <object class="java.util.HashSet">
+          <void method="add">
+           <object class="com.java.models.Product">
+            <void property="name">
+             <string>Product111</string>
+            </void>
+           </object>
+          </void>
+         </object>
+        </void>
+       </object>
+      </void>
+     </object>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.java.models.Store">
+    <void property="name">
+     <string>Store2</string>
+    </void>
+    <void property="sections">
+     <object class="java.util.HashSet"/>
+    </void>
+   </object>
+  </void>
+ </object>
+</java>

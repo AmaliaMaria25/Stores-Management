@@ -23,9 +23,7 @@ public class UtilService {
 
         // Reading data using readLine
         try {
-            final String s;
-            s = reader.readLine();
-            return s;
+            return reader.readLine();
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
@@ -126,8 +124,22 @@ public class UtilService {
         } catch (IOException ex) {
             System.err.println("I/O error: " + ex);
         }
-        }
     }
+
+    public static void displayStock(List<Store> stores){
+        stores.forEach(store->{
+            System.out.println("[Store]: "+store.getName());
+            if(store.getSections() != null)
+                store.getSections().forEach(section -> {
+                    System.out.println("\t[Section]: "+section.getName());
+                    if(section.getProducts() != null)
+                        section.getProducts().forEach(product -> {
+                            System.out.println("\t\t[Product]: "+product.getName());
+                        });
+                });
+        });
+    }
+}
 
 
 

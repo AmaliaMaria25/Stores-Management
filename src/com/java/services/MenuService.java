@@ -107,7 +107,8 @@ public class MenuService {
                 } else if (selectedValue == 4) {
                     //Option "Display" is selected
                     //displayAll();
-                    System.out.println(Main.getStores());
+                    //System.out.println(Main.getStores());
+                    UtilService.displayStock(Main.getStores());
                     pause();
                     mainMenu();
                 } else if (selectedValue == 5) {

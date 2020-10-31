@@ -26,14 +26,6 @@ public class Main {
 
     }
 
-/*    private static void addStuff(){
-        StoreService.add(FILE_NAME,new Store(1,"Store1"),stores);
-        StoreService.add(FILE_NAME,new Store(2,"Store2"),stores);
-        SectionService.add(FILE_NAME,new Section(1,"Section1"),"Store1",stores);
-        ProductService.add(FILE_NAME,"Store1","Section1",new Product(1,"Product1"),stores);
-
-        System.out.println(stores);
-    }*/
 
     public static List<Store> getStores() {
         return stores;

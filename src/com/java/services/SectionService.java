@@ -3,79 +3,88 @@ package com.java.services;
 import com.java.Main;
 import com.java.models.Section;
 import com.java.models.Store;
+import com.sun.webkit.dom.CharacterDataImpl;
+import sun.awt.image.ImageWatched;
 
 //import javax.rmi.CORBA.Util;
-import java.util.HashSet;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Set;
+import java.util.*;
 
 public class SectionService {
     public static void add(final String FILE_NAME, Section section, String storeName, List<Store> storeList){
-        Store store = StoreService.searchStore(storeName,storeList);
-        if(store == null) return;
-        if(store.getSections() == null) store.setSections(new HashSet<>());
-
-        if(searchSection(section.getName(),store.getSections()) != null){
-            System.out.println("Section already exist!");
-            return;
-        }
-        store.getSections().add(section);
+        Optional<Store> store = StoreService.searchStore(storeName,storeList);
+        store.get().getSections().add(section);
 
         UtilService.writeInXML(FILE_NAME.concat(".csv"),storeList);
         UtilService.writeInCSV(FILE_NAME.concat(".csv"), storeList);
+        System.out.println("[Section] "+section.getName()+" was added successfully");
     }
 
     public static void update(final String FILE_NAME, Section section, String storeName, String sectionName, List<Store> storeList){
-        Store store = StoreService.searchStore(storeName,storeList);
-        if(store == null) return;
+        Optional<Store> store = StoreService.searchStore(storeName,storeList);
 
-        Section searchedSection = searchSection(sectionName,store.getSections());
-        if(searchedSection == null) return;
+        Optional<Section> searchedSection = searchSection(sectionName,store.get().getSections());
 
-        searchedSection.setId(section.getId());
-        searchedSection.setName(section.getName());
+        searchedSection.get().setId(section.getId());
+        searchedSection.get().setName(section.getName());
 
         UtilService.writeInXML(FILE_NAME.concat(".xml"),storeList);
         UtilService.writeInCSV(FILE_NAME.concat(".csv"), storeList);
+
+        System.out.println("[Section] "+sectionName+" is now called "+section.getName());
     }
 
     public static void delete(final String FILE_NAME, String sectionName, String storeName, List<Store> storeList){
-        Store store = StoreService.searchStore(storeName,storeList);
-        if(store == null) return;
+        Optional<Store> store = StoreService.searchStore(storeName,storeList);
 
-        Section searchedSection = searchSection(sectionName,store.getSections());
-        if(searchedSection == null) return;
+        Optional<Section> searchedSection = searchSection(sectionName,store.get().getSections());
 
-        store.getSections().remove(searchedSection);
+        store.get().getSections().remove(searchedSection.get());
 
         UtilService.writeInXML(FILE_NAME.concat(".xml"),storeList);
         UtilService.writeInCSV(FILE_NAME.concat(".csv"), storeList);
+
+        System.out.println("[Section] "+sectionName+" was deleted");
     }
 
 
-    public static Section searchSection(String sectionName, Set<Section> sectionList) {
-        try {
-            return sectionList.stream().filter(section -> section.getName().compareTo(sectionName) == 0).findFirst().get();
-        } catch (NoSuchElementException exception) {
-            //System.out.println("Could not find the section with the specified name;");
-        }
-        return null;
+    public static Optional<Section> searchSection(String sectionName, Set<Section> sectionList) {
+        return sectionList.stream().filter(section -> section.getName().compareTo(sectionName) == 0).findFirst();
     }
 
     public static void createSection(){
+        Optional<Store> searchedStore;
         String chosenStore = "";
         String sectionName="";
 
         chosenStore = StoreService.readStore();
-        if(StoreService.searchStore(chosenStore,Main.getStores()) == null) return;
+
+        if(chosenStore.equals("")) return;
+
+        if(!(searchedStore = StoreService.searchStore(chosenStore,Main.getStores())).isPresent()) {
+            System.out.println("Store is not existent!");
+            return;
+        }
+
+        if(searchedStore.get().getSections() == null) searchedStore.get().setSections(new HashSet<>());
 
         System.out.println("Choose a section name");
         sectionName = UtilService.getScanner().next();
+
+        if( searchSection(sectionName,searchedStore.get().getSections()).isPresent()){
+            System.out.println("Section is already existent");
+            return;
+        }
+
         add(Main.getFileName(),new Section(0,sectionName),chosenStore,Main.getStores() );
     }
 
     public static String readSection(Store store){
+        if(store.getSections() == null || store.getSections().isEmpty()){
+            System.out.println("No sections");
+            store.setSections(new HashSet<>());
+            return "";
+        }
+
         String chosenSection = "";
         System.out.println("Type the wanted section: ");
         for(Section loopSection:store.getSections()){
@@ -88,10 +97,23 @@ public class SectionService {
     public static void editSection(){
         String newData = "";
         String chosenStore = StoreService.readStore();
-        Store store = StoreService.searchStore(chosenStore,Main.getStores());
-        if(store == null) return;
 
-        String chosenSection = readSection(store);
+        if(chosenStore.equals("")) return;
+
+        Optional<Store> store = StoreService.searchStore(chosenStore,Main.getStores());
+        if(!store.isPresent()) {
+            System.out.println("Store is not existent!");
+            return;
+        }
+
+        String chosenSection = readSection(store.get());
+
+        if(chosenSection.equals("")) return;
+
+        if(!searchSection(chosenSection,store.get().getSections()).isPresent()){
+            System.out.println("Section is not existent");
+            return;
+        }
 
         System.out.println("Choose a new name:");
         newData =  UtilService.getScanner().next();
@@ -102,10 +124,24 @@ public class SectionService {
     public static void deleteSection(){
         String chosenSection = "";
         String chosenStore = StoreService.readStore();
-        Store store = StoreService.searchStore(chosenStore,Main.getStores());
-        if(store == null) return;
 
-        chosenSection = readSection(store);
+        if(chosenStore.equals("")) return;
+
+        Optional<Store> store = StoreService.searchStore(chosenStore,Main.getStores());
+        if(!store.isPresent()) {
+            System.out.println("Store is not existent!");
+            return;
+        }
+
+        chosenSection = readSection(store.get());
+
+        if(chosenSection.equals("")) return;
+
+        if(!searchSection(chosenSection,store.get().getSections()).isPresent()){
+            System.out.println("Section is not existent!");
+            return;
+        }
+
         delete(Main.getFileName(),chosenSection,chosenStore,Main.getStores());
     }
 
@@ -113,13 +149,21 @@ public class SectionService {
         try {
             store.getSections().forEach(System.out::println);
         }catch(NullPointerException nullPointerException){
-        System.out.println("Couldn't find any sections of this storage");
-    }
+            System.out.println("Couldn't find any sections of this storage");
+        }
     }
 
     public static void displaySections(){
         String chosenStore = StoreService.readStore();
-        Store store = StoreService.searchStore(chosenStore,Main.getStores());
-        display(store);
+
+        if(chosenStore.equals("")) return;
+
+        if(!StoreService.searchStore(chosenStore,Main.getStores()).isPresent()) {
+            System.out.println("Store is not existent!");
+            return;
+        }
+
+        Optional<Store> store = StoreService.searchStore(chosenStore,Main.getStores());
+        display(store.get());
     }
 }

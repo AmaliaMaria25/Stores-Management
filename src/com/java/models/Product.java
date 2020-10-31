@@ -26,12 +26,7 @@ public class Product implements Serializable,Comparable<Product> {
 
     @Override
     public String toString() {
-        return "Product{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", price=" + price +
-                '}';
+        return "\n\t\t"+"[Product]: " +name + "\n";
     }
 
     public int getId() {
