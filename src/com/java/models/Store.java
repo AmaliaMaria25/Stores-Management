@@ -25,11 +25,7 @@ public class Store implements Serializable {
 
     @Override
     public String toString() {
-        return "Store{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", sections=" + sections +
-                '}';
+        return "\n"+"[Store]: "+name+"\n"+sections + "\n";
     }
 
     public String getName() {
